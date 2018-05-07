@@ -66,9 +66,17 @@ class DishController extends Controller
     {
         $model = new Dish();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $model->load(Yii::$app->request->post());
+        $dishProducts = !empty(Yii::$app->request->post('Dish')['products']) ? Yii::$app->request->post('Dish')['products'] : null;
+
+        if ($dishProducts && $model->save()) {
+
+            if(is_array($dishProducts)) $model->updateProducts($dishProducts);
+
             return $this->redirect(['view', 'id' => $model->id]);
         }
+
+        if(empty($dishProducts) && Yii::$app->request->isPost) $model->addError('products', 'Необходимо оставить хотя бы один продукт');
 
         return $this->render('create', [
             'model' => $model,
@@ -86,9 +94,16 @@ class DishController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $dishProducts = !empty(Yii::$app->request->post('Dish')['products']) ? Yii::$app->request->post('Dish')['products'] : null;
+        
+        if ($dishProducts && $model->load(Yii::$app->request->post()) && $model->save()) {
+
+            if(is_array($dishProducts)) $model->updateProducts($dishProducts);
+
             return $this->redirect(['view', 'id' => $model->id]);
         }
+
+        if(empty($dishProducts) && Yii::$app->request->isPost) $model->addError('products', 'Необходимо оставить хотя бы один продукт');
 
         return $this->render('update', [
             'model' => $model,

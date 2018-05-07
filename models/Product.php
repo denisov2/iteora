@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use yii\behaviors\SluggableBehavior;
 use yii\behaviors\TimestampBehavior;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "product".
@@ -24,6 +25,9 @@ class Product extends \yii\db\ActiveRecord
     }
 
 
+    /**
+     * @return array
+     */
     public function behaviors()
     {
        return [
@@ -58,5 +62,13 @@ class Product extends \yii\db\ActiveRecord
             'name' => 'Name',
             'alias' => 'Alias',
         ];
+    }
+
+    /**
+     * @return array
+     */
+    public static function getList() {
+
+        return ArrayHelper::map( self::find()->select('id, name')->all(), 'id', 'name' );
     }
 }

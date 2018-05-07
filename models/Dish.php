@@ -5,6 +5,8 @@ namespace app\models;
 use Yii;
 use yii\behaviors\SluggableBehavior;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "dish".
@@ -13,6 +15,7 @@ use yii\behaviors\TimestampBehavior;
  * @property string $name
  * @property string $alias
  * @property int $time
+ * @property Product[] $products
  */
 class Dish extends \yii\db\ActiveRecord
 {
@@ -36,6 +39,9 @@ class Dish extends \yii\db\ActiveRecord
         ];
     }
 
+    /**
+     * @return array
+     */
     public function behaviors()
     {
         return [
@@ -60,4 +66,35 @@ class Dish extends \yii\db\ActiveRecord
             'time' => 'Time',
         ];
     }
+    
+    /**
+     * @return ActiveQuery
+     */
+    public function getProducts()
+    {
+        return $this->hasMany(Product::class, ['id' => 'product_id'])
+            ->viaTable('dish_product', ['dish_id' => 'id']);
+    }
+
+
+    /**
+     * @param array $productIds
+     * @return bool
+     */
+    public function updateProducts(array $productIds)
+    {
+        DishProduct::deleteAll(['dish_id' => $this->id]);
+        foreach ($productIds as $productId) {
+            
+            $dishProduct = new DishProduct([
+                'dish_id' => $this->id,
+                'product_id' => $productId,
+            ]);
+            $dishProduct->save();
+        }
+        
+        return true;
+    }
+
+
 }
