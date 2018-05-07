@@ -4,8 +4,14 @@ namespace app\widgets;
 
 
 use app\models\Product;
+use kartik\checkbox\CheckboxX;
+use yii\base\Widget;
 
-class Products extends \yii\bootstrap\Widget
+/**
+ * Class Products
+ * @package app\widgets
+ */
+class Products extends Widget
 {
 
     /**
@@ -13,10 +19,33 @@ class Products extends \yii\bootstrap\Widget
      */
     public function run()
     {
-        $products = Product::findAll();
+        $products = Product::find()->all();
+
         foreach ($products as $product) { ?>
-            <label for="<?= $product->id ?>"><?= $product->name ?></label>
-            <input type="checkbox"  name="<?= $product->id ?>" value="<?= $product->name ?>" />  
+
+
+            <?= CheckboxX::widget([
+                'name'=>'product_'.$product->id,
+                'options' => [
+                    'id'=>'product_'.$product->id,
+                    'class' => 'product-checkbox',
+                ],
+                'pluginOptions'=>[
+                    'threeState'=>false,
+                    'size'=>'sm',
+                    "change"=>"function() {
+                        console.log('change'); 
+                     }",
+                ],
+                'pluginEvents'=>[
+                    "change"=>"updateDishes",
+                ],
+            ]);
+            ?>
+            <label class="cbx-label" for="product_<?= $product->id ?>">
+                <?= $product->name ?>
+            </label>
+            <br>
         <? }
 
     }
