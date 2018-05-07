@@ -7,34 +7,21 @@ use yii\behaviors\SluggableBehavior;
 use yii\behaviors\TimestampBehavior;
 
 /**
- * This is the model class for table "product".
+ * This is the model class for table "dish".
  *
  * @property int $id
  * @property string $name
  * @property string $alias
+ * @property int $time
  */
-class Product extends \yii\db\ActiveRecord
+class Dish extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'product';
-    }
-
-
-    public function behaviors()
-    {
-       return [
-           [
-               'class' => SluggableBehavior::class,
-               'attribute' => 'name',
-               'slugAttribute' => 'alias',
-           ],
-           TimestampBehavior::class,
-       ];
-
+        return 'dish';
     }
 
     /**
@@ -43,8 +30,21 @@ class Product extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
+            [['name', 'time'], 'required'],
+            [['time'], 'integer'],
             [['name', 'alias'], 'string', 'max' => 255],
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => SluggableBehavior::class,
+                'attribute' => 'name',
+                'slugAttribute' => 'alias',
+            ],
+            TimestampBehavior::class,
         ];
     }
 
@@ -57,6 +57,7 @@ class Product extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Name',
             'alias' => 'Alias',
+            'time' => 'Time',
         ];
     }
 }
