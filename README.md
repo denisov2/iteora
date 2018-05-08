@@ -22,8 +22,13 @@ http://1254784.uy228250.web.hosting-test.net/admin/product
 
 -------------------
 
-      migrations/             Миграции для создания таблиц БД\
-      modules/admin/           АДМИН модуль 
+      migrations/           Миграции для создания таблиц БД\
+      modules/admin/        АДМИН модуль 
+	  web/js/app.js			Фронтэнд код
 	      
 
+<p>
 
+		  <img src="http://1254784.uy228250.web.hosting-test.net/img/screen.png"/>
+		  
+		  </p>
