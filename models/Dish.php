@@ -76,6 +76,18 @@ class Dish extends \yii\db\ActiveRecord
             ->viaTable('dish_product', ['dish_id' => 'id']);
     }
 
+    /**
+     * @return string
+     */
+    public function getProductsText()
+    {
+        $products = $this->getProducts()->select('name')->column();
+        return implode(',' , $products);
+            
+    }
+
+
+
 
     /**
      * @param array $productIds

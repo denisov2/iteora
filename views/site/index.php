@@ -23,14 +23,16 @@ $this->title = 'My Yii Application';
             <div class="col-lg-4">
                 <h2>Подходящие блюда</h2>
 
-                <div class="dishes">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et
-                        dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                        aliquip
-                        ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-                        dolore eu
-                        fugiat nulla pariatur.</p>
+
+
+                <div class="dishes-wrapper">
+
+                 <?= $this->render('_dishes', [
+                     'dishes' => []
+                 ])?>
+
+
+                
                 </div>
 
 
@@ -39,14 +41,15 @@ $this->title = 'My Yii Application';
                 <h2>Очередь приготовления</h2>
 
                 <div class="queue">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore
-                        et
-                        dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                        aliquip
-                        ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-                        dolore eu
-                        fugiat nulla pariatur.</p>
+                    <?=Yii::$app->session->id?>
+                    <h5>«Ваше блюдо X в процессе приготовления» </h5>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                            60%
+                        </div>
+                    </div>
+
+
 
                 </div>
 

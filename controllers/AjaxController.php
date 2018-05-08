@@ -48,8 +48,14 @@ class AjaxController extends Controller
            if ( empty(array_diff($dish_products_ids, $product_ids))) $dishes[]=$dish;
 
         }
+        
+        $content = $this->renderAjax('@app/views/site/_dishes', ['dishes' => $dishes]);
+        
 
-        return $dishes;
+        return [
+            'success' => 1,
+            'content' => $content
+        ];
 
 
 

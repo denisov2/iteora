@@ -15,8 +15,9 @@ function updateDishes() {
 
     $('input.product-checkbox').each(function () {
 
+        //console.log($(this).val());
 
-        if ($(this).val()) {
+        if ($(this).val() == 1) {
 
 
             checkbox_ids.push($(this).attr('id'))
@@ -33,13 +34,23 @@ function updateDishes() {
         },
         success: function (data) {
 
-            console.log(data);
+
+            if(data.success) {
+
+                console.log(data.content);
+
+                $('div.dishes-wrapper').html(data.content);
+            }
 
         }
     });
 
 }
 
+function orderDish (id) {
+
+    alert (id);
+}
 
 function blockDishes() {
 
