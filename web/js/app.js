@@ -2,12 +2,12 @@
  * Created by denisov on 08.05.2018.
  */
 
-
 $(document).ready(function () {
 
+    $('#btn-clear-order').on('click', clearQueue );
+    setInterval(checkQueue, 1000);
 
 });
-
 
 function updateDishes() {
 
@@ -15,10 +15,7 @@ function updateDishes() {
 
     $('input.product-checkbox').each(function () {
 
-        //console.log($(this).val());
-
         if ($(this).val() == 1) {
-
 
             checkbox_ids.push($(this).attr('id'))
         }
@@ -29,34 +26,80 @@ function updateDishes() {
         dataType: "json",
         type: 'POST',
         data: {
-            checkbox_ids: checkbox_ids,
-            keyword: [1, 2, 3]
+            checkbox_ids: checkbox_ids
         },
         success: function (data) {
 
-
             if(data.success) {
-
-                console.log(data.content);
 
                 $('div.dishes-wrapper').html(data.content);
             }
-
         }
     });
-
 }
 
 function orderDish (id) {
 
-    alert (id);
+    $.ajax({
+        url: '/ajax/order-dish',
+        dataType: "json",
+        type: 'POST',
+        data: {
+            dish_id: id
+        },
+        success: function (data) {
+
+            if(data.success == 1) {
+
+                $('h2.queue-header').text('Очередь приготовления');
+
+            } else {
+
+                $('h2.queue-header').text('Максимум 2 блюда!');
+            }
+
+                $('div.queue-wrapper').html(data.content);
+        }
+    });
+}
+
+function clearQueue(){
+    $.ajax({
+        url: '/ajax/order-clear',
+        dataType: "json",
+        type: 'POST',
+        success: function (data) {
+            $('h2.queue-header').text('Очередь приготовления');
+
+            $('div.queue-wrapper').html(data.content);
+        }
+    });
+}
+
+function checkQueue() {
+    
+    $.ajax({
+        url: '/ajax/check-queue',
+        dataType: "json",
+        type: 'POST',
+        success: function (data) {
+
+            if(data.deleted) {
+
+               $('h2.queue-header').text('Ваше блюдо готово!');
+            }
+            
+            $('div.queue-wrapper').html(data.content);
+        }
+    });
 }
 
 function blockDishes() {
+    //TODO:
 
 }
 
 function unblockDishes() {
-
+    //TODO:
 
 }

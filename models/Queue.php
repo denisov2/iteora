@@ -10,6 +10,7 @@ use Yii;
  * @property int $id
  * @property string $session_id
  * @property int $dish_id
+ * @property Dish $dish
  * @property int $start
  */
 class Queue extends \yii\db\ActiveRecord
@@ -48,7 +49,33 @@ class Queue extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDish()
+    {
+        return $this->hasOne(Dish::className(), ['id' => 'dish_id']);
+    }
+
+    /**
+     * @return float|int
+     */
+    public function getPercent() {
+        
+        $start_time = $this->start;
+        $now_diff =  time() - $start_time;
+        $max_diff = $this->dish->time * 60;
+
+        $result = !empty($max_diff) ? round ($now_diff / $max_diff * 100 ) : 0;
+        if($result > 100) $result = 100;
+
+        
+        return $result;
+    }
+
+
+    /**
      * @param $dish_id
+     * @return Queue|bool
      */
     public static function add($dish_id)
     {
@@ -61,6 +88,32 @@ class Queue extends \yii\db\ActiveRecord
             'session_id' => $session_id,
             'start' => time(),
         ]);
-        $queue->save();
+        if($queue->save()) return $queue;
+
+        return false;
+
+    }
+
+    /**
+     * @param $session_id
+     * @return int
+     * @throws \Exception
+     * @throws \Throwable
+     */
+    public static function check($session_id)
+    {
+        $deleted = 0;
+        $queues = self::find()->where(['session_id' => $session_id])->all();
+        foreach ($queues as $queue) {
+            
+            /* @var $queue Queue */
+            
+            if($queue->getPercent() >= 100) {
+                
+                if($queue->delete()) $deleted  = 1;
+            }
+        }        
+        
+        return $deleted;
     }
 }

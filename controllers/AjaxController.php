@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Dish;
+use app\models\Queue;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 
@@ -39,7 +40,6 @@ class AjaxController extends Controller
 
             }
         }
-
         foreach (Dish::find()->all() as $dish) {
 
             /* @var Dish $dish */
@@ -60,5 +60,60 @@ class AjaxController extends Controller
 
 
     }
+
+    /**
+     * @return array
+     * @throws ForbiddenHttpException
+     */
+    public function actionOrderDish()
+    {
+        if (!\Yii::$app->request->isAjax || !\Yii::$app->request->isPost) throw new ForbiddenHttpException();
+
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        $dish_id = \Yii::$app->request->post('dish_id');
+        if (Queue::add($dish_id)) $success = 1;
+        else $success = 0;
+        $content = $this->renderAjax('@app/views/site/_queue');
+        return [
+            'success' =>$success,
+            'content' => $content
+        ];
+    }
+
+    /**
+     * @return array
+     * @throws ForbiddenHttpException
+     */
+
+    public function actionOrderClear()
+    {
+        if (!\Yii::$app->request->isAjax || !\Yii::$app->request->isPost) throw new ForbiddenHttpException();
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        Queue::deleteAll(['session_id' => \Yii::$app->session->id]);
+        $content = $this->renderAjax('@app/views/site/_queue');
+
+        return ['content' => $content];
+    }
+
+    /**
+     * @return array
+     * @throws ForbiddenHttpException
+     */
+    public function actionCheckQueue()
+    {
+        if (!\Yii::$app->request->isAjax || !\Yii::$app->request->isPost) throw new ForbiddenHttpException();
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        $deleted = Queue::check(['session_id' => \Yii::$app->session->id]);
+        $content = $this->renderAjax('@app/views/site/_queue');
+
+        return [
+            'content' => $content,
+            'deleted' => $deleted,
+        ];
+    }
+
 
 }

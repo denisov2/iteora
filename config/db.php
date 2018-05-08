@@ -2,9 +2,9 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=iteora',
-    'username' => 'root',
-    'password' => '',
+    'dsn' => 'mysql:host=uy228250.mysql.tools;dbname=uy228250_iteora',
+    'username' => 'uy228250_iteora',
+    'password' => 'uy228250_iteora',
     'charset' => 'utf8',
 
     // Schema cache options (for production environment)
