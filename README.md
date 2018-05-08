@@ -27,10 +27,4 @@ http://1254784.uy228250.web.hosting-test.net/admin/product
 	  web/js/app.js			Фронтэнд код
 	      
 
-
-
-		![alt text](https://raw.githubusercontent.com/denisov2/iteora/blob/master/web/img/screen.png?raw=true)
-		![alt text](https://github.com/denisov2/iteora/blob/master/web/img/screen.png)
-		![alt text](http://1254784.uy228250.web.hosting-test.net/web/img/screen.png)
-		
 		  
