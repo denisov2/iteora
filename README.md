@@ -29,6 +29,7 @@ http://1254784.uy228250.web.hosting-test.net/admin/product
 
 <p>
 
-		  <img src="http://1254784.uy228250.web.hosting-test.net/img/screen.png"/>
+		!(https://raw.githubusercontent.com/denisov2/iteora/blob/master/web/img/screen.png?raw=true)
+		
 		  
 		  </p>
